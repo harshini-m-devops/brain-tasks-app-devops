@@ -1,0 +1,35 @@
+version: 0.2
+
+env:
+  variables:
+    AWS_DEFAULT_REGION: us-east-1
+    REPOSITORY_URI: 084396578047.dkr.ecr.us-east-1.amazonaws.com/brain-tasks-app
+    CLUSTER_NAME: brain-cluster
+
+phases:
+
+  pre_build:
+    commands:
+      - echo Logging in to Amazon ECR
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin 084396578047.dkr.ecr.us-east-1.amazonaws.com
+
+      - echo Installing kubectl
+      - curl -o kubectl https://amazon-eks.s3.us-west-2.amazonaws.com/1.27.1/2023-04-19/bin/linux/amd64/kubectl
+      - chmod +x kubectl
+      - mv kubectl /usr/local/bin/
+
+  build:
+    commands:
+      - echo Building Docker image
+      - docker build -t $REPOSITORY_URI:latest .
+
+  post_build:
+    commands:
+      - echo Pushing image to ECR
+      - docker push $REPOSITORY_URI:latest
+
+      - echo Updating kubeconfig
+      - aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $CLUSTER_NAME
+
+      - echo Deploying to Kubernetes
+      - kubectl apply -f k8s/
