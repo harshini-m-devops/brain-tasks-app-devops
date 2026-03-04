@@ -1,91 +1,74 @@
-DevOps Practice Project – Dist Directory
+# Brain Tasks App DevOps Deployment
 
-This repository contains the production-ready build files (dist folder) for DevOps practice and deployment exercises.
+This project demonstrates a complete CI/CD pipeline for deploying the Brain Tasks application using AWS services.
 
-It is intentionally structured to help learners focus on CI/CD pipelines, hosting, containerization, and infrastructure setup rather than application development.
+## GitHub Repository
+https://github.com/harshini-m-devops/brain-tasks-app-devops
 
-📁 What This Repository Contains
+## Technologies Used
 
-dist/ – Compiled and production-ready static files
+- Docker
+- AWS ECR
+- AWS EKS
+- Kubernetes
+- AWS CodeBuild
+- AWS CodePipeline
+- GitHub
+- CloudWatch Logs
 
-HTML
+## Project Architecture
 
-CSS
+GitHub  
+↓  
+CodePipeline  
+↓  
+CodeBuild  
+↓  
+Docker Build  
+↓  
+Push Image to ECR  
+↓  
+Deploy to EKS using kubectl  
+↓  
+Kubernetes Service (LoadBalancer)  
+↓  
+Application accessible via public URL  
 
-JavaScript
+## Steps Implemented
 
-Assets (images, fonts, etc.)
+### 1. Application Setup
+Cloned the application repository and used the production build files.
 
-These files are ready to deploy to:
+### 2. Dockerization
+Created a Dockerfile to containerize the application using Nginx.
 
-Web servers (Nginx / Apache)
+### 3. Container Registry
+Created an AWS ECR repository to store Docker images.
 
-Cloud platforms (AWS S3, Azure Blob, GCP Storage)
+### 4. Kubernetes Deployment
+Created `deployment.yaml` and `service.yaml` to deploy the application to AWS EKS.
 
-Containerized environments (Docker + Nginx)
+### 5. CI/CD Pipeline
+Configured AWS CodePipeline with the following stages:
 
-Kubernetes clusters
+Source → GitHub  
+Build → CodeBuild  
+Deploy → EKS  
 
-CI/CD pipeline demonstrations
+### 6. Monitoring
+CloudWatch Logs were used to monitor build and deployment logs.
 
-🎯 Purpose of This Repository
+---
 
-This repository is designed for:
+## Kubernetes LoadBalancer
 
-DevOps beginners
+Application URL:  
+http://a328467226dd84127a21f06316c3801f-627419157.us-east-1.elb.amazonaws.com
 
-CI/CD practice
+LoadBalancer ARN:  
+arn:aws:elasticloadbalancing:us-east-1:084396578047:loadbalancer/a328467226dd84127a21f06316c3801f
 
-Deployment pipeline testing
+---
 
-Docker & Kubernetes deployment exercises
+## Repository Structure
 
-Web server configuration practice
-
-Reverse proxy and load balancer setup
-
-The goal is to simulate real-world deployment scenarios using already built application files.
-
-❓ Why is there NO package.json?
-
-You may notice that this repository does not include:
-
-package.json
-
-node_modules
-
-Source code (src/)
-
-Build tools configuration
-
-✅ Reason:
-
-This repository only contains the final production build output (dist), not the development source code.
-
-In a typical project:
-
-Developers write source code.
-
-The project is built using tools like:
-
-Node.js
-
-Webpack
-
-Vite
-
-React (or other frameworks)
-
-A dist/ folder is generated.
-
-Only the production build is deployed to servers.
-
-This repository represents step 4 only.
-
-Since this is already the compiled output:
-
-No dependencies are required
-
-No build process is required
-
-No package.json is needed
